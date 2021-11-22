@@ -5,15 +5,17 @@ and PHP-DI container implementation see: https://php-di.org/
 # Documentation: https://www.slimframework.com/
 This application was built for Composer making setup quick and easy.
 
-## Prepare MySQL or MariaDB Database
+## Prepare Database
 For better perfomance NDB Cluster or in MEMORY(heap tables) should be considered
 In this implementation we opted for fine grained control with on the wire caching 
-between the VM instance(s) and the MySQL Server(s).
+between the VM instance(s) and the MySQL Server(s) with proxySQL.
 This allows us to scale to 100K+ connections across thousands of servers
 and simplifies performance monitoring and security.
 see https://proxysql.com/
 
-CREATE DATABASE IF NOT EXISTS stock;
+```bash
+CREATE DATABASE IF NOT EXISTS inventory;
+```
 
 Json documents is supported since MySQL 5.8 which
 approximate to the storage of LONGBLOB or LONGTEXT data.
