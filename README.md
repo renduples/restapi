@@ -17,10 +17,11 @@ see https://proxysql.com/
 CREATE DATABASE IF NOT EXISTS inventory;
 ```
 
-Json documents is supported since MySQL 5.8 which
-approximate to the storage of LONGBLOB or LONGTEXT data.
 https://datatracker.ietf.org/doc/html/rfc7159
+Json documents is supported since MySQL 5.8 which approximate to the storage of LONGBLOB or LONGTEXT data.
+Create a table with a Json Data Type See: https://www.mysqltutorial.org/mysql-json/
 
+```bash
 CREATE TABLE `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sku` varchar(255) NOT NULL COMMENT 'Unique Stock Keeping Code',
@@ -28,8 +29,8 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `sku` (`sku`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Products Table';
+```
 
-See: https://www.mysqltutorial.org/mysql-json/
 
 We use the PHP Data Objects (PDO) extension which provides a data-access abstraction layer, 
 so regardless of database the same functions can be used to issue queries and fetch data.
