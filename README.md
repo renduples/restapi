@@ -11,7 +11,7 @@ See https://proxysql.com/
 
 To install a skeleton API for development simply clone the project in a web directory [my-app-dir]
 ```bash
-git clone git@github.com:renduples/temprest.git
+git clone git@github.com:renduples/restapi.git
 ```
 
 Install or Update dependencies
@@ -108,7 +108,7 @@ FLUSH PRIVILEGES;
 
 Import the sample products table located at `src/Infrastructure/inventory.sql`.
 
-As per https://datatracker.ietf.org/doc/html/rfc7159 Json documents is supported since MySQL 5.8 which approximate to the storage of LONGBLOB or LONGTEXT data. 
+As per https://datatracker.ietf.org/doc/html/rfc7159 Json documents is supported since MySQL 5.8 which approximates to the storage of LONGBLOB or LONGTEXT data. 
 
 See: https://www.mysqltutorial.org/mysql-json/
 
@@ -184,7 +184,7 @@ SELECT hostgroup hg, sum_time, count_star, digest_text FROM stats_mysql_query_di
 +----+----------+------------+------------------------------------------------+
 ```
 
-To improve our API's performance lets cache some queries for 6000 miliseconds:
+To improve our API's performance lets cache some queries for 6000 milliseconds:
 ```bash
 INSERT INTO mysql_query_rules (rule_id,active,username,match_pattern,cache_ttl,apply) VALUES (10,1,'rest-api','^SELECT',6000,1);
 LOAD MYSQL QUERY RULES TO RUNTIME;
