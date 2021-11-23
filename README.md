@@ -1,23 +1,26 @@
 # High Availability RESTful JSON API
 This application uses the Slim PHP Framework with PSR-7 and PHP-DI autowire container implementation. 
+
 See: https://php-di.org/
 
-For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers and simplified performance monitoring, caching and security. See https://proxysql.com/
+For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers and simplified performance monitoring, caching and security. 
 
-## Documentation: https://www.slimframework.com/
+See https://proxysql.com/
 
-### To install a skeleton API for development simply clone the project in a web directory [my-app-dir]
+### Documentation: https://www.slimframework.com/
+
+To install a skeleton API for development simply clone the project in a web directory [my-app-dir]
 ```bash
 git clone git@github.com:renduples/temprest.git
 ```
 
-### Install or Update dependencies
+Install or Update dependencies
 ```bash
 cd [my-app-dir]
 composer install
 ```
 
-### Test the application in development, without a database
+Test the application in development, without a database
 ```bash
 composer start
 ```
@@ -26,6 +29,7 @@ Or use `docker-compose` to run the app with `docker`
 ```bash
 docker-compose up -d
 ```
+
 After that, open `http://localhost:8080/users` in your browser.
 
 You should see output like this:
@@ -75,6 +79,7 @@ composer test
 
 ## Run the application with ProxySQL and a sample Database
 Configure your web server to point to the `public` directory.
+
 See: https://www.slimframework.com/docs/v4/start/web-servers.html
 
 Set the correct file permissions:
@@ -91,6 +96,7 @@ CREATE DATABASE IF NOT EXISTS inventory;
 
 Configure a dedicated user to monitor your MySQL server(s) with ProxySQL
 and create a dedicated MySQL user for the REST API.
+
 The credentials should match those used in your `app/settings`:
 ```bash
 CREATE USER 'monitor'@'%' IDENTIFIED BY 'a-strong-mysql-monitor_password';
@@ -101,11 +107,16 @@ FLUSH PRIVILEGES;
 ```
 
 Import the sample products table located at `src/Infrastructure/inventory.sql`.
-As per https://datatracker.ietf.org/doc/html/rfc7159 Json documents is supported since MySQL 5.8 which approximate to the storage of LONGBLOB or LONGTEXT data. See: https://www.mysqltutorial.org/mysql-json/
+
+As per https://datatracker.ietf.org/doc/html/rfc7159 Json documents is supported since MySQL 5.8 which approximate to the storage of LONGBLOB or LONGTEXT data. 
+
+See: https://www.mysqltutorial.org/mysql-json/
+
 ```bash
 cd [my-app-dir]
 mysql -u rest-api -pa-strong-rest-api_password -h localhost inventory<src/Infrastructure/inventory.sql
 ```
+
 If you chose not to import sample data, connect to your MySQL server and create an empty products table:
 ```bash
 CREATE TABLE `products` (
@@ -119,6 +130,7 @@ CREATE TABLE `products` (
 
 ## Install and configure proxySQL
 Follow these instructions https://proxysql.com/documentation/installing-proxysql/
+
 Once installed, test and start the proxySQL service
 ```bash
 proxysql --version
@@ -162,7 +174,7 @@ Check your MySQL Server(s) health with:
 SELECT * FROM mysql_servers;
 ```
 
-The RESTful API is now ready to serve traffic and we can analyse expensive queries with:
+The RESTful API is now ready to serve traffic and we can analyse expensive queries:
 ```bash
 SELECT hostgroup hg, sum_time, count_star, digest_text FROM stats_mysql_query_digest ORDER BY sum_time DESC;
 +----+----------+------------+------------------------------------------------+
