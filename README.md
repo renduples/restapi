@@ -90,7 +90,7 @@ CREATE DATABASE IF NOT EXISTS inventory;
 Configure a dedicated user to monitor your MySQL server(s) with ProxySQL
 and create a dedicated MySQL user for the REST API.
 The credentials should match those used in `app/settings`:
-````bash
+```bash
 CREATE USER 'monitor'@'%' IDENTIFIED BY 'a-strong-mysql-monitor_password';
 GRANT SELECT on sys.* to 'monitor'@'%';
 CREATE USER 'rest-api'@'localhost' IDENTIFIED BY 'a-strong-rest-api_password';
