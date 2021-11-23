@@ -23,7 +23,7 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 "db" => [
                     'driver' => 'mysqli',
-                    'host' => 'localhost:6033', // mysqlProxy
+                    'host' => '127.0.0.1:6033', // mysqlProxy
                     'username' => 'rest-api',
                     'password' => 'a-strong-rest-api_password',
                     'database' => 'inventory', 

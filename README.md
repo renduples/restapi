@@ -75,7 +75,9 @@ composer test
 
 ## Run the application with ProxySQL and a sample Database
 Configure your web server to point to the `public` directory.
-And set the correct file permissions for your web server:
+See: https://www.slimframework.com/docs/v4/start/web-servers.html
+
+Set the correct file permissions:
 ```bash
 sudo chown www-data:www-data -R [my-app-dir]
 sudo find [my-app-dir] -type d -exec chmod 755 {} \;
@@ -89,7 +91,7 @@ CREATE DATABASE IF NOT EXISTS inventory;
 
 Configure a dedicated user to monitor your MySQL server(s) with ProxySQL
 and create a dedicated MySQL user for the REST API.
-The credentials should match those used in `app/settings`:
+The credentials should match those used in your `app/settings`:
 ```bash
 CREATE USER 'monitor'@'%' IDENTIFIED BY 'a-strong-mysql-monitor_password';
 GRANT SELECT on sys.* to 'monitor'@'%';
@@ -98,7 +100,7 @@ GRANT ALL PRIVILEGES ON inventory.* TO 'rest-api'@'localhost' IDENTIFIED BY 'a-s
 FLUSH PRIVILEGES;
 ```
 
-Import the sample products table located at `src/Infrastructure/inventory.sql`
+Import the sample products table located at `src/Infrastructure/inventory.sql`.
 As per https://datatracker.ietf.org/doc/html/rfc7159 Json documents is supported since MySQL 5.8 which approximate to the storage of LONGBLOB or LONGTEXT data. See: https://www.mysqltutorial.org/mysql-json/
 ```bash
 cd [my-app-dir]
@@ -123,12 +125,12 @@ proxysql --version
 service proxysql start
 ```
 
-Lets do a basic configuration with the proxySQL Admin Interface
+Lets do a basic configuration with the proxySQL Admin Interface:
 ```bash
 mysql -u admin -padmin -h 127.0.0.1 -P6032 --prompt='Admin> '
 ```
 
-Furst we set the credentials for the monitor user
+First we set the credentials for the monitor user:
 ```bash
 UPDATE global_variables SET variable_value='monitor' WHERE variable_name='mysql-monitor_username';
 UPDATE global_variables SET variable_value='monitor' WHERE variable_name='a-strong-mysql-monitor_password';
@@ -160,8 +162,9 @@ Check your MySQL Server(s) health with:
 SELECT * FROM mysql_servers;
 ```
 
-ProxySQL is now ready to serve traffic on port 6603.
-See demo: https://rest.herebetalent.com/
+## The RESTful API is now ready to serve traffic
+
+View demo: https://rest.herebetalent.com/
 
 
 
