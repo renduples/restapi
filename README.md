@@ -2,7 +2,7 @@
 This application uses the Slim PHP Framework with PSR-7 and PHP-DI autowire container implementation. 
 See: https://php-di.org/
 
-For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across thousands of servers and simplifies performance monitoring, caching and security. See https://proxysql.com/
+For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers and simplified performance monitoring, caching and security. See https://proxysql.com/
 
 ## Documentation: https://www.slimframework.com/
 
@@ -28,6 +28,7 @@ Or use `docker-compose` to run the app with `docker`
 docker-compose up -d
 ```
 After that, open `http://localhost:8080/users` in your browser.
+
 You should see output like this:
 ```bash
 {
@@ -150,7 +151,7 @@ Monitoring intervals can be viewed like this:
 SELECT * FROM global_variables WHERE variable_name LIKE 'mysql-monitor_%';
 ```
 
-Now add at least one Backend MySQL Server. For read write splits and replicating clusters you can add more servers later.
+Now add at least one backend MySQL Server.
 ```bash
 INSERT INTO mysql_servers(hostgroup_id,hostname,port) VALUES (1,'127.0.0.1',3306);
 LOAD MYSQL SERVERS TO RUNTIME;
@@ -162,9 +163,53 @@ Check your MySQL Server(s) health with:
 SELECT * FROM mysql_servers;
 ```
 
-## The RESTful API is now ready to serve traffic
+The RESTful API is now ready to serve traffic and we can analyse expensive queries with:
+```bash
+SELECT hostgroup hg, sum_time, count_star, digest_text FROM stats_mysql_query_digest ORDER BY sum_time DESC;
++----+----------+------------+------------------------------------------------+
+| hg | sum_time | count_star | digest_text                                    |
++----+----------+------------+------------------------------------------------+
+| 1  | 5528     | 5          | SELECT * FROM products ORDER BY id ASC LIMIT ? |
++----+----------+------------+------------------------------------------------+
+```
 
-View demo: https://rest.herebetalent.com/
+To improve our API's performance lets cache some queries for 6000 miliseconds:
+```bash
+INSERT INTO mysql_query_rules (rule_id,active,username,match_pattern,cache_ttl,apply) VALUES (10,1,'rest-api','^SELECT',6000,1);
+LOAD MYSQL QUERY RULES TO RUNTIME;
+SAVE MYSQL QUERY RULES TO DISK;
+```
 
+Use CURL or a browser to rapidly test the GET endpoints a few times (Replace the domain name with your own)
+```bash
+curl -v https://rest.herebetalent.com/products
 
+curl -v https://rest.herebetalent.com/products/1
 
+curl -v https://rest.herebetalent.com/products/2
+```
+
+Our stats show a zero sum time and hostgroup -1 entry which means no backend database was used for rapid SELECT queries
+```bash
+SELECT hostgroup hg, sum_time, count_star, digest_text FROM stats_mysql_query_digest ORDER BY sum_time DESC;
++----+----------+------------+-----------------------------------------------------+
+| hg | sum_time | count_star | digest_text                                         |
++----+----------+------------+-----------------------------------------------------+
+| 1  | 5528     | 17         | SELECT * FROM products ORDER BY id ASC LIMIT ?      |
+| 1  | 2947     | 1          | INSERT INTO products (sku,attributes) VALUES (?, ?) |
+| 1  | 459      | 1          | SELECT * FROM products WHERE id = ?                 |
+| -1 | 0        | 10         | SELECT * FROM products ORDER BY id ASC LIMIT ?      | < --- Cached Queries
++----+----------+------------+-----------------------------------------------------+
+```
+
+Finally test the POST endpoint with some Json (Replace the domain name with your own)
+```bash
+curl -H "Content-type: application/json" \
+  -d '{"sku": "SKU0006", "attributes": "{\"foo\": \"bar\", \"size\": \"xxx-large\", \"grams\": \"500\"}"}' \
+  https://rest.herebetalent.com/products 
+
+Product created with id: 6
+```
+
+For more information on query caching see: https://proxysql.com/documentation/query-cache/
+For read write splits see: https://proxysql.com/documentation/proxysql-read-write-split-howto/
