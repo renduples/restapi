@@ -101,8 +101,8 @@ The credentials should match those used in your `app/settings`:
 ```bash
 CREATE USER 'monitor'@'%' IDENTIFIED BY 'a-strong-mysql-monitor_password';
 GRANT SELECT on sys.* to 'monitor'@'%';
-CREATE USER 'rest-api'@'localhost' IDENTIFIED BY 'a-strong-rest-api_password';
-GRANT ALL PRIVILEGES ON inventory.* TO 'rest-api'@'localhost' IDENTIFIED BY 'a-strong-rest-api_password';
+CREATE USER 'rest-api'@'127.0.0.1' IDENTIFIED BY 'a-strong-rest-api_password';
+GRANT ALL PRIVILEGES ON inventory.* TO 'rest-api'@'127.0.0.1' IDENTIFIED BY 'a-strong-rest-api_password';
 FLUSH PRIVILEGES;
 ```
 
