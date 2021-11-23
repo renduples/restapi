@@ -222,7 +222,7 @@ curl -H "Content-type: application/json" \
 Product created with id: 6
 ```
 
-For more information on query caching see: https://proxysql.com/documentation/query-cache/
+For more information on benchmarking and query caching see: https://proxysql.com/documentation/query-cache/
 
 For read write splits see: https://proxysql.com/documentation/proxysql-read-write-split-howto/
 
