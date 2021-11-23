@@ -11,12 +11,12 @@ use PDO;
 class ProductDatabase implements ProductRepository
 {
 
-	  /**
+    /**
      * @var db
      */
     private $db;
 
-		/**
+    /**
      * @var Product[]
      */
     private $products;
@@ -28,7 +28,8 @@ class ProductDatabase implements ProductRepository
      */
     public function __construct(PDO $db)
     {
-			$this->db = $db;
+        $this->db = $db;
+
     }
 
     /**
@@ -36,10 +37,11 @@ class ProductDatabase implements ProductRepository
      */
     public function findAll(): array
     {
-			$query = $this->db->prepare("SELECT * FROM products ORDER BY id ASC LIMIT 5000");
-			$query->execute();
-			$this->products = $query->fetchAll(PDO::FETCH_ASSOC);
-      return array_values($this->products);
+        $query = $this->db->prepare("SELECT * FROM products ORDER BY id ASC LIMIT 5000");
+        $query->execute();
+        $this->products = $query->fetchAll(PDO::FETCH_ASSOC);
+        return array_values($this->products);
+
     }
 
     /**
@@ -47,27 +49,17 @@ class ProductDatabase implements ProductRepository
      */
     public function findProductOfId(int $id): Product
     {
-			$query = $this->db->prepare("SELECT * FROM products WHERE id = ?");
-			$query->execute(array($id));
-			$product = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query = $this->db->prepare("SELECT * FROM products WHERE id = ?");
+        $query->execute(array($id));
+        $product = $query->fetchAll(PDO::FETCH_ASSOC);
 
-			if (!isset($product[0])) {
-        throw new ProductNotFoundException();
-      }
-			
-			$this->products = new Product( (int)$product[0]['id'], $product[0]['sku'], $product[0]['attributes'] );
-      return $this->products;
+
+        if (!isset($product[0])) {
+            throw new ProductNotFoundException();
+        }
+
+        $this->products = new Product((int)$product[0]['id'], $product[0]['sku'], $product[0]['attributes']);
+        return $this->products;
+
     }
-
-		/**
-     * {@inheritdoc}
-     */
-    public function addProduct($data): bool
-    {
-			$query = $this->db->prepare("INSERT INTO products (sku, attributes) VALUES (:sku, :attributes)");
-			$query->execute($data);
-
-      return true;
-    }
-
 }

@@ -18,7 +18,7 @@ return function (App $app) {
 
     $app->get('/', function (Request $request, Response $response) {
         $response->getBody()->write('Hello world!');
-        $response->getBody()->write('Works');
+        $response->getBody()->write('It Works');
 
         return $response;
     });

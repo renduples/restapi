@@ -3,7 +3,7 @@ This application uses the Slim PHP Framework with PSR-7 and PHP-DI autowire cont
 
 See: https://php-di.org/
 
-For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers and simplified performance monitoring, caching and security. 
+For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers, with simplified performance monitoring, caching and security. 
 
 See https://proxysql.com/
 
@@ -71,7 +71,7 @@ You should see output like this:
 }
 ```
 
-To run the test suite your App directory must be writable:
+To run the unit test suite your App directory must be writable:
 ```bash
 sudo chown -R $USER:$USER [my-app-dir]
 composer test
@@ -225,3 +225,8 @@ Product created with id: 6
 For more information on query caching see: https://proxysql.com/documentation/query-cache/
 
 For read write splits see: https://proxysql.com/documentation/proxysql-read-write-split-howto/
+
+View the API log:
+```bash
+tail -f logs/app.log
+```

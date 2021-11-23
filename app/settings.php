@@ -22,12 +22,12 @@ return function (ContainerBuilder $containerBuilder) {
                     'level' => Logger::DEBUG,
                 ],
                 "db" => [
-                    'driver' => 'mysqli',
-                    'host' => '127.0.0.1:6033', // mysqlProxy
-                    'username' => 'rest-api',
-                    'password' => 'a-strong-rest-api_password',
-                    'database' => 'inventory', 
-                    'charset' => 'utf8mb4',
+                    'driver'    => 'mysqli',
+                    'host'      => '127.0.0.1:6033', // proxySQL
+                    'username'  => 'rest-api',
+                    'password'  => 'a-strong-rest-api_password',
+                    'database'  => 'inventory',
+                    'charset'   => 'utf8mb4',
                     'collation' => 'utf8mb4_unicode_ci',
                     'flags' => [
                         // Turn off persistent connections
