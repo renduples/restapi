@@ -6,19 +6,18 @@ For this implementation we opted for fine grained control with on the wire cachi
 
 ## Documentation: https://www.slimframework.com/
 
-## Install skeleton API for development
-Clone the project in a web directory [my-app-dir]
+### To install a skeleton API for development simply clone the project in a web directory [my-app-dir]
 ```bash
 git clone git@github.com:renduples/temprest.git
 ```
 
-## Install or Update dependencies
+### Install or Update dependencies
 ```bash
 cd [my-app-dir]
 composer install
 ```
 
-## Test the application in development, without a database
+### Test the application in development, without a database
 ```bash
 composer start
 ```
