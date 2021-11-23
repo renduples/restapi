@@ -21,13 +21,12 @@ return function (ContainerBuilder $containerBuilder) {
                     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
-                // change credentials for production
                 "db" => [
                     'driver' => 'mysqli',
-                    'host' => 'localhost:8889', // MAMP mysql port
-                    'username' => 'root',
-                    'database' => 'stock2shop',
-                    'password' => 'root', 
+                    'host' => 'localhost:6033', // mysqlProxy
+                    'username' => 'rest-api',
+                    'password' => 'a-strong-rest-api_password',
+                    'database' => 'inventory', 
                     'charset' => 'utf8mb4',
                     'collation' => 'utf8mb4_unicode_ci',
                     'flags' => [
