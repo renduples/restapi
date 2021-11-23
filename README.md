@@ -152,7 +152,7 @@ SELECT * FROM global_variables WHERE variable_name LIKE 'mysql-monitor_%';
 
 Now add at least one Backend MySQL Server. For read write splits and replicating clusters you can add more servers later.
 ```bash
-INSERT INTO mysql_servers(hostgroup_id,hostname,port) VALUES (1,'localhost',3306);
+INSERT INTO mysql_servers(hostgroup_id,hostname,port) VALUES (1,'127.0.0.1',3306);
 LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
 ```
