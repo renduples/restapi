@@ -114,7 +114,7 @@ See: https://www.mysqltutorial.org/mysql-json/
 
 ```bash
 cd [my-app-dir]
-mysql -u rest-api -pa-strong-rest-api_password -h localhost inventory<src/Infrastructure/inventory.sql
+mysql -u rest-api -pa-strong-rest-api_password -h 127.0.0.1 inventory<src/Infrastructure/inventory.sql
 ```
 
 If you chose not to import sample data, connect to your MySQL server and create an empty products table:
