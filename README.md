@@ -3,7 +3,7 @@ This application uses the Slim PHP Framework with PSR-7 and PHP-DI autowire cont
 
 See: https://php-di.org/
 
-For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) with proxySQL. This allows us to scale to 100K+ connections across hundreds of servers, with simplified performance monitoring, caching and security. 
+For this implementation we opted for fine grained control with on the wire caching between the Web Server(s) and the MySQL Server(s) using proxySQL. This allows us to scale to 100K+ connections across hundreds of servers, with simplified performance monitoring, caching and security. 
 
 See https://proxysql.com/
 
