@@ -29,7 +29,8 @@ return function (App $app) {
         $group->get('/{id}', ViewProductAction::class);
         $group->post('', function (Request $request, Response $response) {
             $db = $this->get(PDO::class);
-            $db->prepare("INSERT INTO products (sku, attributes) VALUES (:sku)")->execute($request->getParsedBody());
+            $db->prepare("INSERT INTO products (sku) VALUES (:sku)")->execute($request->getParsedBody());
+
 
             $id = $db->lastInsertId();
             if ($id>0) {
