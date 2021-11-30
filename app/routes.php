@@ -29,10 +29,16 @@ return function (App $app) {
         $group->get('/{id}', ViewProductAction::class);
         $group->post('', function (Request $request, Response $response) {
             $db = $this->get(PDO::class);
-            $db->prepare("INSERT INTO products (sku, attributes) VALUES (:sku, :attributes)")->execute($request->getParsedBody());
+            $db->prepare("INSERT INTO products (sku, attributes) VALUES (:sku)")->execute($request->getParsedBody());
+
             $id = $db->lastInsertId();
             if ($id>0) {
-                $response->getBody()->write('Product created with id: ' . $id);
+                $db->prepare("INSERT INTO product_meta (`sku`, `key`, `value`) VALUES (:sku, :key, :value)")->execute($request->getParsedBody());
+                $metaId = $db->lastInsertId();
+                if ($metaId>0) {
+                    $response->getBody()->write('Product created with id: ' . $id);
+
+                }
             } else {
                 $response->getBody()->write('Failed to create Product');
             }
